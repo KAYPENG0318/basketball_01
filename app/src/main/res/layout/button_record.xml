@@ -270,7 +270,6 @@
                         android:layout_weight="1"
                         android:button="@android:drawable/screen_background_dark_transparent"
                         android:checked="false"
-                        android:text="1"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -280,7 +279,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:button="@android:drawable/screen_background_dark_transparent"
-                        android:text="2"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -291,7 +289,6 @@
                         android:layout_weight="1"
                         android:button="@android:drawable/screen_background_dark_transparent"
                         android:duplicateParentState="false"
-                        android:text="3"
                         android:textSize="18sp" />
 
                 </RadioGroup>
@@ -309,7 +306,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:button="@android:drawable/screen_background_dark_transparent"
-                        android:text="4"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -319,7 +315,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:button="@android:drawable/screen_background_dark_transparent"
-                        android:text="5"
                         android:textSize="18sp" />
 
                     <RadioButton

@@ -59,7 +59,7 @@ public class ActivityCheck extends AppCompatActivity {
         }
         if(count>=5)
         {
-        //dp.insertPlayers(list);       //測試,故標記
+//        dp.insertPlayers(list);       //測試,故標記
             Intent it = new Intent(ActivityCheck.this,Pick5Activity.class);
             startActivity(it);
         }

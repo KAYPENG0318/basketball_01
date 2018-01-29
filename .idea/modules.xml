@@ -3,10 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\tmp\basketball_01\app\app.iml" filepath="C:\tmp\basketball_01\app\app.iml" />
       <module fileurl="file://C:\Users\user\AndroidStudioProjects\basketball_01\app\app.iml" filepath="C:\Users\user\AndroidStudioProjects\basketball_01\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/basketball_01.iml" filepath="$PROJECT_DIR$/basketball_01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/basketball_01.iml" filepath="$PROJECT_DIR$/.idea/basketball_01.iml" />
       <module fileurl="file://C:\Users\user\AndroidStudioProjects\basketball_01\basketball_01.iml" filepath="C:\Users\user\AndroidStudioProjects\basketball_01\basketball_01.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\basketball_01\.idea\basketball_01.iml" filepath="D:\AndroidStudioProjects\basketball_01\.idea\basketball_01.iml" />
+      <module fileurl="file://C:\tmp\basketball_01\basketball_01.iml" filepath="C:\tmp\basketball_01\basketball_01.iml" />
       <module fileurl="file://C:\android\basketball_01\.idea\basketball_01.iml" filepath="C:\android\basketball_01\.idea\basketball_01.iml" />
     </modules>
   </component>

@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">basketball_01</string>
+    <string name="app_name">basketball_01</string>
     <string name="Title" translatable="false">籃球全場紀錄版</string>
-    <string name="gameStart" translatable="false">比賽開始</string>
-    <string name="query" translatable="false">紀錄查詢</string>
-    <string name="group" translatable="false">請輸入球員背號及姓名</string>
-    <string name="teamEnter" translatable="false">請輸入隊伍名稱</string>
-    <string name="point2_in" translatable="false">兩分球進</string>
+    <string name="gameStart" translatable="false">Game Start</string>
+    <string name="query" translatable="false">Record Query</string>
+    <string name="group" translatable="false">Please Enter numbers and names</string>
+    <string name="teamEnter" translatable="false">Please Enter Team'name</string>
+    <string name="point2_in" translatable="false">point2in</string>
     <string name="point2_out" translatable="false">兩分球不進</string>
     <string name="point3_in" translatable="false">三分球進</string>
     <string name="point3_out" translatable="false">三分球不進</string>
@@ -23,6 +24,4 @@
     <string name="NextSection" translatable="false">下一節</string>
     <string name="Pick5Players">請選擇先發五人</string>
     <string name="start" translatable="false">start</string>
-
-
 </resources>

@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -23,14 +25,13 @@ import com.yenyu.basketball_01.dao.PlayerDAO;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import static com.yenyu.basketball_01.RecordAction.Action_player1;
 
 public class ButtonRecord extends AppCompatActivity {
     Button bt2in, bt2out, bt3in, bt3out, btFTin, btFTout, btOR, btDR, btST, btAS, btBS, btTO, btFoul, btNextSection;
     RadioButton rbNumber1, rbNumber2, rbNumber3, rbNumber4, rbNumber5, rbOP;
     TextView tvScore1, tvScore2, tvSectionFoul1, tvSectionFoul2, tvSection,tvOnline;
     RadioGroup rg1, rg2;
-    public int Player;
+    public String Player;
     public int Action;
     public int Section=RecordAction.Section1;
     ListView lv;
@@ -38,7 +39,7 @@ public class ButtonRecord extends AppCompatActivity {
     ArrayList<com.yenyu.basketball_01.dao.Player> mylist;
     boolean []chks;
     String[] numbers;
-    ArrayList<String> Playerlist;
+    int count;
 
 
 
@@ -83,12 +84,12 @@ public class ButtonRecord extends AppCompatActivity {
 
 
         MyPlayersListener listener2 = new MyPlayersListener();
-        rbNumber1.setOnCheckedChangeListener(listener2);
-        rbNumber2.setOnCheckedChangeListener(listener2);
-        rbNumber3.setOnCheckedChangeListener(listener2);
-        rbNumber4.setOnCheckedChangeListener(listener2);
-        rbNumber5.setOnCheckedChangeListener(listener2);
-        rbOP.setOnCheckedChangeListener(listener2);
+        rbNumber1.setOnClickListener(listener2);
+        rbNumber2.setOnClickListener(listener2);
+        rbNumber3.setOnClickListener(listener2);
+        rbNumber4.setOnClickListener(listener2);
+        rbNumber5.setOnClickListener(listener2);
+        rbOP.setOnClickListener(listener2);
 
 
         MyOnClickListener listener = new MyOnClickListener();
@@ -97,7 +98,7 @@ public class ButtonRecord extends AppCompatActivity {
         bt3in.setOnClickListener(listener);
         bt3out.setOnClickListener(listener);
         btFTin.setOnClickListener(listener);
-        btFTin.setOnClickListener(listener);
+        btFTout.setOnClickListener(listener);
         btDR.setOnClickListener(listener);
         btOR.setOnClickListener(listener);
         btAS.setOnClickListener(listener);
@@ -107,6 +108,55 @@ public class ButtonRecord extends AppCompatActivity {
         btFoul.setOnClickListener(listener);
         btNextSection.setOnClickListener(listener);
 
+        //抓取前面輸入的球員號碼
+        Intent it = getIntent();
+        Bundle b=it.getExtras();
+        String pid=it.getStringExtra("pid");
+        numbers = b.getStringArray("numbers");
+        chks = b.getBooleanArray("chks");
+
+        Log.d("test",rbNumber1.getText().toString());
+
+        for(int i=0;i<chks.length;i++)
+        {
+            if(chks[i])
+            {
+                if(rbNumber1.getText().toString().equals(""))
+                {
+                    rbNumber1.setText(numbers[i]);
+                }
+                else if(rbNumber2.getText().toString().equals(""))
+                {
+                    rbNumber2.setText(numbers[i]);
+                }
+                else if(rbNumber3.getText().toString().equals(""))
+                {
+                    rbNumber3.setText(numbers[i]);
+                }else if(rbNumber4.getText().toString().equals(""))
+                {
+                    rbNumber4.setText(numbers[i]);
+                }else if(rbNumber5.getText().toString().equals(""))
+                {
+                    rbNumber5.setText(numbers[i]);
+                }
+            }
+        }
+
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.recordmenu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId())
+        {
+            case R.id.menu_record:
+                Toast.makeText(ButtonRecord.this,"預覽紀錄",Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -115,126 +165,126 @@ public class ButtonRecord extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.bt2in:
-                    Action = RecordAction.Action_2point_in;
-                    if (Player <= 105 && Player >= 101) {
-                        //當按下按鈕時，將RecordAction的Action_2point_in指定給Action
-                        tvScore1.setText(String.valueOf(Integer.valueOf(tvScore1.getText().toString()) + 2));
-                        clickCancel();
-                    } else if (Player == 106) {
-                        tvScore2.setText(String.valueOf(Integer.valueOf(tvScore2.getText().toString()) + 2));
-                        clickCancel();
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_2point_in;
+                        if (Player.equals("106")) {
+                            tvScore2.setText(String.valueOf(Integer.valueOf(tvScore2.getText().toString()) + 2));
+                            clickCancel();
+                        } else {
+                            tvScore1.setText(String.valueOf(Integer.valueOf(tvScore1.getText().toString()) + 2));
+                            clickCancel();
+                        }
+                        tvOnline.setText("兩分球進");
                     }
-                    else {Player=0;}
-                    tvOnline.setText("兩分球進");
                     break;
                 case R.id.bt2out:
-                    if (Player <= 105 && Player >= 101) {
+                    if (!Player.equals("")) {
                         Action = RecordAction.Action_2point_out;
                         clickCancel();
+                        tvOnline.setText("兩分球不進");
                     }
-                    else {clickCancel();}
-                    tvOnline.setText("兩分球不進");
+
                     break;
                 case R.id.bt3in:
-                    Action = RecordAction.Action_3point_in;
-                    if (Player <= 105 && Player >= 101) {
-                        tvScore1.setText(String.valueOf(Integer.valueOf(tvScore1.getText().toString()) + 3));
-                        clickCancel();
-                    } else if (Player == 106) {
-                        tvScore2.setText(String.valueOf(Integer.valueOf(tvScore2.getText().toString()) + 3));
-                        clickCancel();
-                    } else {clickCancel();}
-                    tvOnline.setText("三分球進");
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_3point_in;
+                        if (Player.equals("106")) {
+                            tvScore2.setText(String.valueOf(Integer.valueOf(tvScore2.getText().toString()) + 3));
+                            clickCancel();
+                        } else{
+                            tvScore1.setText(String.valueOf(Integer.valueOf(tvScore1.getText().toString()) + 3));
+                            clickCancel();
+                        }
+                        tvOnline.setText("三分球進");
+                    }
                     break;
                 case R.id.bt3out:
-                    Action = RecordAction.Action_3point_out;
-                    if (Player <= 105 && Player >= 101) {
+                    if(!Player.equals("")) {
+                        Action = RecordAction.Action_3point_out;
                         clickCancel();
+                        tvOnline.setText("三分球不進");
                     }
-                    else {clickCancel();}
-                    tvOnline.setText("三分球不進");
                     break;
                 case R.id.btFTin:
-                    Action = RecordAction.Action_FT_in;
-                    if (Player <= 105 && Player >= 101) {
-                        tvScore1.setText(String.valueOf(Integer.valueOf(tvScore1.getText().toString()) + 1));
-                        clickCancel();
-                    } else if (Player == 106) {
-                        tvScore2.setText(String.valueOf(Integer.valueOf(tvScore2.getText().toString()) + 1));
-                        clickCancel();
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_FT_in;
+                        if (Player.equals("106")) {
+                            tvScore2.setText(String.valueOf(Integer.valueOf(tvScore2.getText().toString()) + 1));
+                            clickCancel();
+                        } else{
+                            tvScore1.setText(String.valueOf(Integer.valueOf(tvScore1.getText().toString()) + 1));
+                            clickCancel();
+                        }
+                        tvOnline.setText("罰球進");
                     }
-                    else {clickCancel();}
-                    tvOnline.setText("罰球進");
                     break;
                 case R.id.btFTout:
-                    Action = RecordAction.Action_FT_out;
-                    Log.d("罰球",Action+"");
-                    if (Player <= 105 && Player >= 101) {
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_FT_out;
                         clickCancel();
+                        tvOnline.setText("罰球不進");
                     }
-                    else{clickCancel();}
-                    Log.d("罰球",Action+"");
-                    tvOnline.setText("罰球不進");
+
                     break;
                 case R.id.btOR:
-                    Action = RecordAction.Action_OR;
-                    if (Player <= 105 && Player >= 101) {
-                    clickCancel();
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_OR;
+                        clickCancel();
+                        tvOnline.setText("進攻籃板");
                     }
-                    else {clickCancel();}
-                    tvOnline.setText("進攻籃板");
                     break;
                 case R.id.btDR:
-                    Action = RecordAction.Action_DR;
-                    if(Player <= 105 && Player >= 101) {
-                    clickCancel();}
-                    else {clickCancel();}
-                    tvOnline.setText("防守籃板");
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_DR;
+                        clickCancel();
+                        tvOnline.setText("防守籃板");
+                    }
                     break;
                 case R.id.btST:
-                    Action = RecordAction.Action_ST;
-                    if (Player <= 105 && Player >= 101) {
-                    clickCancel();}
-                    else {clickCancel();}
-                    tvOnline.setText("抄截");
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_ST;
+                        clickCancel();
+                        tvOnline.setText("抄截");
+                    }
                     break;
                 case R.id.btAS:
-                    Action = RecordAction.Action_AS;
-                    if (Player <= 105 && Player >= 101) {
-                        clickCancel();}
-                    else {clickCancel();}
-                    tvOnline.setText("助攻");
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_AS;
+                        clickCancel();
+                        tvOnline.setText("助攻");
+                    }
                     break;
                 case R.id.btBS:
-                    Action = RecordAction.Action_BS;
-                    if (Player <= 105 && Player >= 101) {
-                    clickCancel();}
-                    else {clickCancel();}
-                    tvOnline.setText("阻攻");
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_BS;
+                        clickCancel();
+                        tvOnline.setText("阻攻");
+                    }
                     break;
                 case R.id.btTO:
-                    Action = RecordAction.Action_TO;
-                    if (Player <= 105 && Player >= 101) {
-                    clickCancel();}
-                    else {clickCancel();}
-                    tvOnline.setText("失誤");
+
+                    if (Player.equals("")) {
+                        Action = RecordAction.Action_TO;
+                        clickCancel();
+                        tvOnline.setText("失誤");
+                    }
                     break;
                 case R.id.btFoul:
-                    Action = RecordAction.Action_Foul;
-                    if (Player <= 105 && Player >= 101) {
-                        int sectionfoul1 = Integer.valueOf(tvSectionFoul1.getText().toString());
-                        if(sectionfoul1<5)
-                            tvSectionFoul1.setText(String.valueOf(sectionfoul1+1));
-                        clickCancel();}
-                    else if(Player ==106)
-                    {
-                        int sectionfoul2 = Integer.valueOf(tvSectionFoul2.getText().toString());
-                        if(sectionfoul2<5)
-                            tvSectionFoul2.setText(String.valueOf(sectionfoul2+1));
-                        clickCancel();
+                    if (!Player.equals("")) {
+                        Action = RecordAction.Action_Foul;
+                        if (Player.equals("106")) {
+                            int sectionfoul2 = Integer.valueOf(tvSectionFoul2.getText().toString());
+                            if(sectionfoul2<5)
+                                tvSectionFoul2.setText(String.valueOf(sectionfoul2+1));
+                            clickCancel();}
+                        else {
+                            int sectionfoul1 = Integer.valueOf(tvSectionFoul1.getText().toString());
+                            if(sectionfoul1<5)
+                                tvSectionFoul1.setText(String.valueOf(sectionfoul1+1));
+                            clickCancel();
+                        }
+                        tvOnline.setText("犯規");
                     }
-                    else {clickCancel();}
-                    tvOnline.setText("犯規");
                     break;
                 case R.id.btNextSection:
                     if(Section == 1111)
@@ -260,114 +310,101 @@ public class ButtonRecord extends AppCompatActivity {
     }
 
 
-    class MyPlayersListener implements CompoundButton.OnCheckedChangeListener
-    {
-
+    class MyPlayersListener implements CompoundButton.OnClickListener {
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            switch(buttonView.getId())
-            {
+        public void onClick(View view) {
+            switch (view.getId()) {
                 case R.id.rbNumber1:
-                     if(102<=Player && Player<=106 )
-                         clickCancel();
-                     rg2.clearCheck();
-                     Player = RecordAction.Action_player1;
-                     Log.d("player", Player + "");
-                     tvOnline.setText("1號選手");
-                     break;
-                case R.id.rbNumber2:
-                    if(101<=Player && Player<=106 && Player != 102)
-                        clickCancel();
                     rg2.clearCheck();
-                    Player = RecordAction.Action_player2;
-                    Log.d("player",Player+"");
-                    tvOnline.setText("2號選手");
+                    Player = rbNumber1.getText().toString();
+                    tvOnline.setText(Player + "號選手");
+                    break;
+                case R.id.rbNumber2:
+                    rg2.clearCheck();
+                    Player = rbNumber2.getText().toString();
+                    tvOnline.setText(Player + "號選手");
                     break;
                 case R.id.rbNumber3:
-                    if(101<=Player && Player<=106 && Player != 103)
-                        clickCancel();
                     rg2.clearCheck();
-                    Player = RecordAction.Action_player3;
-                    Log.d("player",Player+"");
-                    tvOnline.setText("3號選手");
+                    Player = rbNumber3.getText().toString();
+                    tvOnline.setText(Player + "號選手");
                     break;
                 case R.id.rbNumber4:
-                    if(101<=Player && Player<=106 && Player != 104)
-                        clickCancel();
                     rg1.clearCheck();
-                    Player = RecordAction.Action_player4;
-                    Log.d("player",Player+"");
-                    tvOnline.setText("4號選手");
+                    Player = rbNumber4.getText().toString();
+                    tvOnline.setText(Player + "號選手");
                     break;
                 case R.id.rbNumber5:
-                    if(101<=Player && Player<=106 && Player != 105)
-                        clickCancel();
                     rg1.clearCheck();
-                    Player = RecordAction.Action_player5;
-                    Log.d("player",Player+"");
-                    tvOnline.setText("5號選手");
+                    Player = rbNumber5.getText().toString();
+                    tvOnline.setText(Player + "號選手");
                     break;
                 case R.id.rbOP:
-                    if(101<=Player && Player<=105 )
-                        clickCancel();
+                    Player = String.valueOf(RecordAction.Action_playerOP);
                     rg1.clearCheck();
-                    Player = RecordAction.Action_playerOP;
-                    Log.d("player",Player+"");
                     tvOnline.setText("對手");
                     break;
 
-
-
             }
+            Log.d("player", Player + "");
         }
-
     }
 
-
-
-    public void clickCancel()
-    {
-        Player = RecordAction.Action_playerEmpty;
+    public void clickCancel() {
+        Player = "";
         rg1.clearCheck();
         rg2.clearCheck();
     }
 
-
-    public void clickChange(View v)
-    {
+    public void clickChange(View v) {
+        //換球員名單
         AlertDialog.Builder builder = new AlertDialog.Builder(ButtonRecord.this);
         builder.setTitle("請勾選上場球員名單(5)");
-        Intent it = getIntent();
-        Bundle b=it.getExtras();
-        String pid=it.getStringExtra("pid");
-        numbers = b.getStringArray("numbers");
-        chks = b.getBooleanArray("chks");
-        Log.d("numbers",numbers[1]);
+
+//        Log.d("numbers",numbers[1]);
         builder.setMultiChoiceItems(numbers, chks, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                count = 0;
                 for(int i=0;i<chks.length;i++)
                 {
-                    Log.d("i",i+"");
-                    while(chks[i])
+                    if(chks[i])
                     {
-                        if(chks[i] == false) continue;
-//                        Playerlist.add((numbers.toString()));
-//                        Log.d("Playerlist",Playerlist+"");
+                        count++;
                     }
                 }
-
+                Log.d("count",count+"");
+                rbNumber1.setText("");
+                rbNumber2.setText("");
+                rbNumber3.setText("");
+                rbNumber4.setText("");
+                rbNumber5.setText("");
+                for (int i = 0; i < chks.length; i++) {
+                    if (chks[i]) {
+                        if (rbNumber1.getText().toString().equals("")) {
+                            rbNumber1.setText(numbers[i]);
+                        } else if (rbNumber2.getText().toString().equals("")) {
+                            rbNumber2.setText(numbers[i]);
+                        } else if (rbNumber3.getText().toString().equals("")) {
+                            rbNumber3.setText(numbers[i]);
+                        } else if (rbNumber4.getText().toString().equals("")) {
+                            rbNumber4.setText(numbers[i]);
+                        } else if (rbNumber5.getText().toString().equals("")) {
+                            rbNumber5.setText(numbers[i]);
+                        }
+                    }
+                }
             }
         });
         builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                rbNumber1.setText(Playerlist.get(0));
-//                rbNumber2.setText(Playerlist.get(1));
-//                rbNumber3.setText(Playerlist.get(2));
-//                rbNumber4.setText(Playerlist.get(3));
-//                rbNumber5.setText(Playerlist.get(4));
+                if (count != 5) {
+                    Toast.makeText(ButtonRecord.this, "請勾選五位球員", Toast.LENGTH_SHORT).show();
+                    tvOnline.setText("");
+                }
+                else{tvOnline.setText("您已更改球員名單");}
+//
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -379,12 +416,10 @@ public class ButtonRecord extends AppCompatActivity {
         builder.show();
 
 
-
     }
 
-    public void clickUndo(View v)
-    {
-        AlertDialog.Builder builder= new AlertDialog.Builder(ButtonRecord.this);
+    public void clickUndo(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ButtonRecord.this);
         builder.setTitle("確定取消上一步嗎");
         builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
             @Override
@@ -401,7 +436,6 @@ public class ButtonRecord extends AppCompatActivity {
         builder.show();
 
     }
-
 }
 
 
